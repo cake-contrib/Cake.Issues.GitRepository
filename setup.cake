@@ -51,6 +51,9 @@ Task("Prepare-Integration-Tests")
     Unzip(packagePath, addinDir);
 });
 
+Task("Buildserver")
+  .IsDependentOn("Run-Integration-Tests");
+
 BuildParameters.Tasks.IntegrationTestTask.IsDependentOn("Prepare-Integration-Tests");
 
 //*************************************************************************************************
