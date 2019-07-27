@@ -1,6 +1,7 @@
 # Project specific 
 
 BuildArtifacts/
+tests/integration/tools/*
 
 # Created by https://www.gitignore.io/api/cake,visualstudio
 
