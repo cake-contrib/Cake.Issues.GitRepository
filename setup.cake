@@ -14,6 +14,7 @@ BuildParameters.SetParameters(
     repositoryOwner: "cake-contrib",
     repositoryName: "Cake.Issues.GitRepository",
     appVeyorAccountName: "cakecontrib",
+    shouldRunGitVersion: true,
     shouldRunCodecov: false,
     shouldRunIntegrationTests: true,
     integrationTestScriptPath: "./tests/integration/tests.cake");
