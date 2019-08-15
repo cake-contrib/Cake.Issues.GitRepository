@@ -16,6 +16,7 @@ BuildParameters.SetParameters(
     appVeyorAccountName: "cakecontrib",
     shouldRunGitVersion: true,
     shouldRunCodecov: false,
+    shouldGenerateDocumentation: false,
     shouldRunIntegrationTests: true,
     integrationTestScriptPath: "./tests/integration/tests.cake");
 
