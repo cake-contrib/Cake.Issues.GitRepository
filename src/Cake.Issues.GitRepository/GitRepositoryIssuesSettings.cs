@@ -14,7 +14,7 @@
 
         /// <summary>
         /// Gets or sets a value indicating whether the repository should be checked for
-        /// binary files path length.
+        /// files path length.
         /// </summary>
         public bool CheckFilesPathLength { get; set; }
 

@@ -13,7 +13,7 @@
     }
 
     /// <summary>
-    /// Description of the rule which checks if the path of a binary file in the repository is too long.
+    /// Description of the rule which checks if the path of a file in the repository is too long.
     /// </summary>
     public class FilePathLengthRuleDescription : BaseGitRepositoryIssuesRuleDescription
     {

@@ -130,10 +130,10 @@
         }
 
          /// <summary>
-        /// Checks for binary files path length.
+        /// Checks for files path length.
         /// </summary>
         /// <param name="length">Max length to be used to check the files.</param>
-        /// <returns>List of issues for binary files.</returns>
+        /// <returns>List of issues for repository files.</returns>
         private IEnumerable<IIssue> CheckForFilesPathLength(int length)
         {
 

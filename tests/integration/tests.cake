@@ -89,8 +89,7 @@ Task("CheckFilesPathLength")
 });
 
 Task("Run-All-Tests")
-    .IsDependentOn("CheckBinaryFilesTrackedByLfs")
-    .IsDependentOn("CheckFilesPathLength");
+    .IsDependentOn("CheckBinaryFilesTrackedByLfs", "CheckFilesPathLength");
 
 //////////////////////////////////////////////////
 
