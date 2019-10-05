@@ -78,7 +78,7 @@ Task("CheckFilesPathLength")
     var reportDir =
         repoRootDir.Combine("BuildArtifacts").Combine("TestResults").Combine("Integration");
     var reportFilePath =
-        reportDir.CombineWithFilePath("issues-report.html");
+        reportDir.CombineWithFilePath("plissues-report.html");
     EnsureDirectoryExists(reportDir);
 
     CreateIssueReport(
