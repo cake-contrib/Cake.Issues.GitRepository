@@ -68,7 +68,7 @@ Task("CheckFilesPathLength")
                 new GitRepositoryIssuesSettings
                 {
                     CheckFilesPathLength = true,
-                    FilePathLength = 60
+                    FilesPathLength = 60
                 }),
             new ReadIssuesSettings(repoRootDir)
             {
