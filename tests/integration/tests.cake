@@ -46,7 +46,7 @@ Task("CheckBinaryFilesTrackedByLfs")
     var reportDir =
         repoRootDir.Combine("BuildArtifacts").Combine("TestResults").Combine("Integration");
     var reportFilePath =
-        reportDir.CombineWithFilePath("issues-report.html");
+        reportDir.CombineWithFilePath("CheckBinaryFilesTrackedByLfs.html");
     EnsureDirectoryExists(reportDir);
 
     CreateIssueReport(
@@ -68,7 +68,7 @@ Task("CheckFilesPathLength")
                 new GitRepositoryIssuesSettings
                 {
                     CheckFilesPathLength = true,
-                    FilesPathLength = 60
+                    MaxFilePathLength = 60
                 }),
             new ReadIssuesSettings(repoRootDir)
             {
@@ -78,7 +78,7 @@ Task("CheckFilesPathLength")
     var reportDir =
         repoRootDir.Combine("BuildArtifacts").Combine("TestResults").Combine("Integration");
     var reportFilePath =
-        reportDir.CombineWithFilePath("plissues-report.html");
+        reportDir.CombineWithFilePath("FilePathTooLong.html");
     EnsureDirectoryExists(reportDir);
 
     CreateIssueReport(
