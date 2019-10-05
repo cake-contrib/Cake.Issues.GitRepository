@@ -56,8 +56,41 @@ Task("CheckBinaryFilesTrackedByLfs")
         reportFilePath);
 });
 
+Task("CheckFilesPathLength")
+    .Does(() =>
+{
+    var repoRootDir = MakeAbsolute(Directory("../../"));
+
+    var issues =
+        ReadIssues(
+            GitRepositoryIssuesAliases.GitRepositoryIssues(
+                Context,
+                new GitRepositoryIssuesSettings
+                {
+                    CheckFilesPathLength = true,
+                    FilePathLength = 60
+                }),
+            new ReadIssuesSettings(repoRootDir)
+            {
+                 Format = IssueCommentFormat.Html
+            });
+
+    var reportDir =
+        repoRootDir.Combine("BuildArtifacts").Combine("TestResults").Combine("Integration");
+    var reportFilePath =
+        reportDir.CombineWithFilePath("issues-report.html");
+    EnsureDirectoryExists(reportDir);
+
+    CreateIssueReport(
+        issues,
+        GenericIssueReportFormatFromEmbeddedTemplate(GenericIssueReportTemplate.HtmlDiagnostic),
+        repoRootDir,
+        reportFilePath);
+});
+
 Task("Run-All-Tests")
-    .IsDependentOn("CheckBinaryFilesTrackedByLfs");
+    .IsDependentOn("CheckBinaryFilesTrackedByLfs")
+    .IsDependentOn("CheckFilesPathLength");
 
 //////////////////////////////////////////////////
 

@@ -15,10 +15,10 @@
     /// <summary>
     /// Description of the rule which checks if the path of a binary file in the repository is too long.
     /// </summary>
-    public class BinaryFilePathLengthRuleDescription : BaseGitRepositoryIssuesRuleDescription
+    public class FilePathLengthRuleDescription : BaseGitRepositoryIssuesRuleDescription
     {
         /// <inheritdoc />
-        public override string RuleName => "BinaryFilePathLength";
+        public override string RuleName => "FilePathLength";
 
         /// <inheritdoc />
         public override IssuePriority Priority => IssuePriority.Warning;

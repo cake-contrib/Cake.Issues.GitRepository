@@ -67,9 +67,9 @@
                 result.AddRange(this.CheckForBinaryFilesNotTrackedByLfs(format));
             }
 
-            if (this.IssueProviderSettings.CheckBinaryFilesPathLength)
+            if (this.IssueProviderSettings.CheckFilesPathLength)
             {
-                result.AddRange(this.CheckForBinaryFilesPathLength(this.IssueProviderSettings.BinaryFilesPathLength));
+                result.AddRange(this.CheckForFilesPathLength(this.IssueProviderSettings.FilesPathLength));
             }
 
             return result;
@@ -134,26 +134,18 @@
         /// </summary>
         /// <param name="length">Max length to be used to check the files.</param>
         /// <returns>List of issues for binary files.</returns>
-        private IEnumerable<IIssue> CheckForBinaryFilesPathLength(int length)
+        private IEnumerable<IIssue> CheckForFilesPathLength(int length)
         {
 
             IEnumerable<string> allFiles = this.GetAllFilesFromRepository();
+            List<IIssue> result = new List<IIssue>();
 
             if (!allFiles.Any())
             {
                 return new List<IIssue>();
             }
 
-            IEnumerable<string> textFiles = this.GetTextFilesFromRepository();
-            IEnumerable<string> binaryFiles = this.DetermineBinaryFiles(allFiles, textFiles);
-
-            if (!binaryFiles.Any())
-            {
-                return new List<IIssue>();
-            }
-
-            List<IIssue> result = new List<IIssue>();
-            foreach (string file in binaryFiles)
+            foreach (string file in allFiles)
             {
                 string message = null;
                 int pathLength = file.Length;
@@ -162,7 +154,7 @@
                     message = $"The path for the binary file \"{file}\", is too long";
                 }
 
-                var ruleDescription = new BinaryFilePathLengthRuleDescription();
+                var ruleDescription = new FilePathLengthRuleDescription();
 
                 result.Add(
                     IssueBuilder
