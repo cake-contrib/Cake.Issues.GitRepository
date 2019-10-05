@@ -151,17 +151,20 @@
                 int pathLength = file.Length;
 
                 if (pathLength > length) {
-                    message = $"The path for the binary file \"{file}\", is too long";
+                    
+                    message = $"The path for the file \"{file}\", is too long";
+
+                    var ruleDescription = new FilePathLengthRuleDescription();
+
+                    result.Add(
+                        IssueBuilder
+                            .NewIssue(message, this)
+                            .InFile(file)
+                            .OfRule(ruleDescription)
+                            .Create());
+                            
                 }
 
-                var ruleDescription = new FilePathLengthRuleDescription();
-
-                result.Add(
-                    IssueBuilder
-                        .NewIssue(message, this)
-                        .InFile(file)
-                        .OfRule(ruleDescription)
-                        .Create());
             }
 
             return result;
