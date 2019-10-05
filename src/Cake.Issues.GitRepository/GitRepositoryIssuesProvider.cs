@@ -67,6 +67,11 @@
                 result.AddRange(this.CheckForBinaryFilesNotTrackedByLfs(format));
             }
 
+            if (this.IssueProviderSettings.CheckBinaryFilesPathLength)
+            {
+                result.AddRange(this.CheckForBinaryFilesPathLength(this.IssueProviderSettings.BinaryFilesPathLength));
+            }
+
             return result;
         }
 
@@ -112,6 +117,52 @@
                 }
 
                 var ruleDescription = new BinaryFileNotTrackedByLfsRuleDescription();
+
+                result.Add(
+                    IssueBuilder
+                        .NewIssue(message, this)
+                        .InFile(file)
+                        .OfRule(ruleDescription)
+                        .Create());
+            }
+
+            return result;
+        }
+
+         /// <summary>
+        /// Checks for binary files path length.
+        /// </summary>
+        /// <param name="length">Max length to be used to check the files.</param>
+        /// <returns>List of issues for binary files.</returns>
+        private IEnumerable<IIssue> CheckForBinaryFilesPathLength(int length)
+        {
+
+            IEnumerable<string> allFiles = this.GetAllFilesFromRepository();
+
+            if (!allFiles.Any())
+            {
+                return new List<IIssue>();
+            }
+
+            IEnumerable<string> textFiles = this.GetTextFilesFromRepository();
+            IEnumerable<string> binaryFiles = this.DetermineBinaryFiles(allFiles, textFiles);
+
+            if (!binaryFiles.Any())
+            {
+                return new List<IIssue>();
+            }
+
+            List<IIssue> result = new List<IIssue>();
+            foreach (string file in binaryFiles)
+            {
+                string message = null;
+                int pathLength = file.Length;
+
+                if (pathLength > length) {
+                    message = $"The path for the binary file \"{file}\", is too long";
+                }
+
+                var ruleDescription = new BinaryFilePathLengthRuleDescription();
 
                 result.Add(
                     IssueBuilder
