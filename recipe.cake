@@ -14,6 +14,7 @@ BuildParameters.SetParameters(
     repositoryOwner: "cake-contrib",
     repositoryName: "Cake.Issues.GitRepository",
     appVeyorAccountName: "cakecontrib",
+    shouldPublishMyGet: false,
     shouldRunGitVersion: true,
     shouldRunCodecov: false,
     shouldGenerateDocumentation: false,
