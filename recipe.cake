@@ -1,4 +1,4 @@
-#load nuget:?package=Cake.Recipe&version=1.0.0
+#load nuget:https://pkgs.dev.azure.com/cake-contrib/Home/_packaging/addins/nuget/v3/index.json?package=Cake.Recipe&version=2.0.0-alpha0493&prerelease
 
 //*************************************************************************************************
 // Settings
@@ -7,16 +7,13 @@
 Environment.SetVariableNames();
 
 BuildParameters.SetParameters(
-    context: Context, 
+    context: Context,
     buildSystem: BuildSystem,
     sourceDirectoryPath: "./src",
     title: "Cake.Issues.GitRepository",
     repositoryOwner: "cake-contrib",
     repositoryName: "Cake.Issues.GitRepository",
     appVeyorAccountName: "cakecontrib",
-    shouldPublishMyGet: false,
-    shouldRunGitVersion: true,
-    shouldRunCodecov: false,
     shouldGenerateDocumentation: false,
     shouldRunIntegrationTests: true,
     integrationTestScriptPath: "./tests/integration/tests.cake");
@@ -36,7 +33,7 @@ ToolSettings.SetToolSettings(
 
 Task("Prepare-Integration-Tests")
     .IsDependentOn("Create-NuGet-Packages")
-    .Does(() =>
+    .Does<BuildVersion>((context, buildVersion) =>
 {
     // Clean addin directory
     var addinDir = MakeAbsolute(Directory("./tools/Addins/" + BuildParameters.RepositoryName));
@@ -50,7 +47,7 @@ Task("Prepare-Integration-Tests")
 
     // Unzip package from current build into addin directory
     var packagePath =
-        BuildParameters.Paths.Directories.NuGetPackages.CombineWithFilePath("Cake.Issues.GitRepository." + BuildParameters.Version.SemVersion + ".nupkg");
+        BuildParameters.Paths.Directories.NuGetPackages.CombineWithFilePath("Cake.Issues.GitRepository." + buildVersion.SemVersion + ".nupkg");
     Unzip(packagePath, addinDir);
 });
 
