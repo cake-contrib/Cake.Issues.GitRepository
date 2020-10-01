@@ -29,7 +29,7 @@ jobs:
       sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
     displayName: 'Select Mono 5.18.1'
   - bash: |
-      ./build.sh --target Buildserver
+      ./build.sh --target=Buildserver
     displayName: 'Cake Build'
 - job: Ubuntu
   pool:
@@ -45,5 +45,5 @@ jobs:
       && mono --version
     displayName: 'Downgrade Mono to 6.6.0'
   - bash: |
-      ./build.sh --verbosity diagnostic
+      ./build.sh --verbosity=diagnostic
     displayName: 'Cake Build'
