@@ -7,13 +7,14 @@
 Environment.SetVariableNames();
 
 BuildParameters.SetParameters(
-    context: Context, 
+    context: Context,
     buildSystem: BuildSystem,
     sourceDirectoryPath: "./src",
     title: "Cake.Issues.GitRepository",
     repositoryOwner: "cake-contrib",
     repositoryName: "Cake.Issues.GitRepository",
     appVeyorAccountName: "cakecontrib",
+    shouldPublishMyGet: false,
     shouldRunGitVersion: true,
     shouldRunCodecov: false,
     shouldGenerateDocumentation: false,
@@ -25,7 +26,7 @@ BuildParameters.PrintParameters(Context);
 ToolSettings.SetToolSettings(
     context: Context,
     dupFinderExcludePattern: new string[] { BuildParameters.RootDirectoryPath + "/src/Cake.Issues.GitRepository.Tests/*.cs" },
-    testCoverageFilter: "+[*]* -[xunit.*]* -[Cake.Core]* -[Cake.Testing]* -[*.Tests]* -[Cake.Issues]* -[Cake.Issues.Testing]* -[Shouldly]**",
+    testCoverageFilter: "+[*]* -[xunit.*]* -[Cake.Core]* -[Cake.Testing]* -[*.Tests]* -[Cake.Issues]* -[Cake.Issues.Testing]* -[Shouldly]* -[DiffEngine]* -[EmptyFiles]*",
     testCoverageExcludeByAttribute: "*.ExcludeFromCodeCoverage*",
     testCoverageExcludeByFile: "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs");
 
