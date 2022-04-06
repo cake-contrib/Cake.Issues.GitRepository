@@ -1,4 +1,4 @@
-#load nuget:?package=Cake.Recipe&version=1.0.0
+#load nuget:?package=Cake.Recipe&version=2.2.1
 
 //*************************************************************************************************
 // Settings
@@ -14,10 +14,8 @@ BuildParameters.SetParameters(
     repositoryOwner: "cake-contrib",
     repositoryName: "Cake.Issues.GitRepository",
     appVeyorAccountName: "cakecontrib",
-    shouldPublishMyGet: false,
-    shouldRunGitVersion: true,
-    shouldRunCodecov: false,
     shouldGenerateDocumentation: false,
+    shouldRunDupFinder: false,
     shouldRunIntegrationTests: true,
     integrationTestScriptPath: "./tests/integration/tests.cake");
 
@@ -25,7 +23,6 @@ BuildParameters.PrintParameters(Context);
 
 ToolSettings.SetToolSettings(
     context: Context,
-    dupFinderExcludePattern: new string[] { BuildParameters.RootDirectoryPath + "/src/Cake.Issues.GitRepository.Tests/*.cs" },
     testCoverageFilter: "+[*]* -[xunit.*]* -[Cake.Core]* -[Cake.Testing]* -[*.Tests]* -[Cake.Issues]* -[Cake.Issues.Testing]* -[Shouldly]* -[DiffEngine]* -[EmptyFiles]*",
     testCoverageExcludeByAttribute: "*.ExcludeFromCodeCoverage*",
     testCoverageExcludeByFile: "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs");
@@ -36,7 +33,7 @@ ToolSettings.SetToolSettings(
 
 Task("Prepare-Integration-Tests")
     .IsDependentOn("Create-NuGet-Packages")
-    .Does(() =>
+    .Does<BuildVersion>((context, buildVersion) =>
 {
     // Clean addin directory
     var addinDir = MakeAbsolute(Directory("./tools/Addins/" + BuildParameters.RepositoryName));
@@ -50,7 +47,7 @@ Task("Prepare-Integration-Tests")
 
     // Unzip package from current build into addin directory
     var packagePath =
-        BuildParameters.Paths.Directories.NuGetPackages.CombineWithFilePath("Cake.Issues.GitRepository." + BuildParameters.Version.SemVersion + ".nupkg");
+        BuildParameters.Paths.Directories.NuGetPackages.CombineWithFilePath("Cake.Issues.GitRepository." + buildVersion.SemVersion + ".nupkg");
     Unzip(packagePath, addinDir);
 });
 

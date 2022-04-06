@@ -12,7 +12,7 @@ pr:
 jobs:
 - job: Windows
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: 'windows-2022'
   steps:
   - powershell: |
       $ENV:CAKE_SKIP_GITVERSION=([string]::IsNullOrEmpty($ENV:SYSTEM_PULLREQUEST_PULLREQUESTID) -eq $False).ToString()
@@ -21,7 +21,7 @@ jobs:
     displayName: 'Cake Build'
 - job: macOS
   pool:
-    vmImage: 'macOS-10.14'
+    vmImage: 'macOS-10.15'
   steps:
   # To manually select a Xamarin SDK version on the Hosted macOS agent, enable this script with the SDK version you want to target
   #  https://go.microsoft.com/fwlink/?linkid=871629
@@ -33,7 +33,7 @@ jobs:
     displayName: 'Cake Build'
 - job: Ubuntu
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-18.04'
   steps:
   # Use Mono 6.6.0 until Cake.Recipe is compatible with Cake 0.37.0 which fixes this issue
   - bash: |
