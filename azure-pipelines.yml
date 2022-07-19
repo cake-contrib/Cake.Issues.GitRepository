@@ -16,34 +16,25 @@ jobs:
   steps:
   - powershell: |
       $ENV:CAKE_SKIP_GITVERSION=([string]::IsNullOrEmpty($ENV:SYSTEM_PULLREQUEST_PULLREQUESTID) -eq $False).ToString()
-      .\build.ps1 -target Buildserver
+      .\build.ps1 --target=Buildserver
       exit $LASTEXITCODE
     displayName: 'Cake Build'
 - job: macOS
   pool:
     vmImage: 'macOS-10.15'
   steps:
-  # To manually select a Xamarin SDK version on the Hosted macOS agent, enable this script with the SDK version you want to target
-  #  https://go.microsoft.com/fwlink/?linkid=871629
+  # # To manually select a Xamarin SDK version on the Hosted macOS agent, enable this script with the SDK version you want to target
+  # #  https://go.microsoft.com/fwlink/?linkid=871629
+  # - bash: |
+  #     sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
+  #   displayName: 'Select Mono 5.18.1'
   - bash: |
-      sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
-    displayName: 'Select Mono 5.18.1'
-  - bash: |
-      ./build.sh --target Buildserver
+      ./build.sh --target=Buildserver
     displayName: 'Cake Build'
 - job: Ubuntu
   pool:
     vmImage: 'ubuntu-18.04'
   steps:
-  # Use Mono 6.6.0 until Cake.Recipe is compatible with Cake 0.37.0 which fixes this issue
   - bash: |
-      sudo apt-get remove mono-complete mono-devel mono-gac mono-runtime-common monodoc-manual \
-      && sudo apt-get autoremove \
-      && echo "deb https://download.mono-project.com/repo/ubuntu stable-xenial/snapshots/6.6.0.161 main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list \
-      && sudo apt-get update \
-      && sudo apt-get install -y --no-install-recommends mono-complete \
-      && mono --version
-    displayName: 'Downgrade Mono to 6.6.0'
-  - bash: |
-      ./build.sh --verbosity diagnostic
+      ./build.sh --target=Buildserver
     displayName: 'Cake Build'
