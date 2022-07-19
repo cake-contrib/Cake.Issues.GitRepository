@@ -23,6 +23,11 @@ jobs:
   pool:
     vmImage: 'macOS-11'
   steps:
+  - task: UseDotNet@2
+    displayName: Use .NET 6.0
+    inputs:
+      packageType: 'sdk'
+      version: '6.0.x'
   - bash: |
       ./build.sh --target=Buildserver
     displayName: 'Cake Build'
