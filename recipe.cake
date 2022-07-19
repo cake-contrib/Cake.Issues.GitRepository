@@ -14,6 +14,7 @@ BuildParameters.SetParameters(
     repositoryOwner: "cake-contrib",
     repositoryName: "Cake.Issues.GitRepository",
     appVeyorAccountName: "cakecontrib",
+    shouldRunCoveralls: false, // Disabled because it's currently failing
     shouldGenerateDocumentation: false,
     shouldRunIntegrationTests: true,
     integrationTestScriptPath: "./tests/integration/tests.cake");
