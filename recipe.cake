@@ -1,4 +1,4 @@
-#load nuget:?package=Cake.Recipe&version=2.2.1
+#load nuget:https://pkgs.dev.azure.com/cake-contrib/Home/_packaging/addins/nuget/v3/index.json?package=Cake.Recipe&version=3.0.0-beta0001-0007&prerelease
 
 //*************************************************************************************************
 // Settings
@@ -15,7 +15,6 @@ BuildParameters.SetParameters(
     repositoryName: "Cake.Issues.GitRepository",
     appVeyorAccountName: "cakecontrib",
     shouldGenerateDocumentation: false,
-    shouldRunDupFinder: false,
     shouldRunIntegrationTests: true,
     integrationTestScriptPath: "./tests/integration/tests.cake");
 
