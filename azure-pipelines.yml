@@ -21,13 +21,8 @@ jobs:
     displayName: 'Cake Build'
 - job: macOS
   pool:
-    vmImage: 'macOS-10.15'
+    vmImage: 'macOS-11'
   steps:
-  # # To manually select a Xamarin SDK version on the Hosted macOS agent, enable this script with the SDK version you want to target
-  # #  https://go.microsoft.com/fwlink/?linkid=871629
-  # - bash: |
-  #     sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
-  #   displayName: 'Select Mono 5.18.1'
   - bash: |
       ./build.sh --target=Buildserver
     displayName: 'Cake Build'
