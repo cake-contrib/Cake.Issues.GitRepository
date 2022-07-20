@@ -10,26 +10,139 @@ pr:
 - hotfix/*
 
 jobs:
-- job: Windows
+# Build
+- job: Build
   pool:
     vmImage: 'windows-2022'
   steps:
-  - powershell: |
-      $ENV:CAKE_SKIP_GITVERSION=([string]::IsNullOrEmpty($ENV:SYSTEM_PULLREQUEST_PULLREQUESTID) -eq $False).ToString()
-      .\build.ps1 --target=Buildserver
-      exit $LASTEXITCODE
-    displayName: 'Cake Build'
-- job: macOS
+  - powershell: ./build.ps1
+    displayName: 'Build'
+  - publish: $(Build.SourcesDirectory)/BuildArtifacts/Packages/NuGet
+    artifact: NuGet Package
+    displayName: 'Publish NuGet package as build artifact'
+# Integration Tests Windows Server 2019 (.NET Core tool)
+- job: Test_Windows_2019_DotNetCoreTool
+  displayName: Integration Tests Windows Server 2019 (.NET Core tool)
+  dependsOn: Build
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - download: current
+    artifact: NuGet Package
+    displayName: 'Download build artifact'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Pipeline.Workspace)/NuGet Package
+      targetFolder: $(Build.SourcesDirectory)/BuildArtifacts/Packages/NuGet
+    displayName: 'Copy build artifact for test run'
+  - powershell: ./build.ps1
+    workingDirectory: ./tests/script-runner/
+    displayName: 'Run integration tests'
+  - publish: $(Build.SourcesDirectory)/BuildArtifacts/TestResults/Integration
+    artifact: Integration Tests Windows Server 2019 (.NET Core tool)
+    displayName: 'Publish generated reports as build artifact'
+# Integration Tests Windows Server 2022 (.NET Core tool)
+- job: Test_Windows_2022_DotNetCoreTool
+  displayName: Integration Tests Windows Server 2022 (.NET Core tool)
+  dependsOn: Build
+  pool:
+    vmImage: 'windows-2022'
+  steps:
+  - download: current
+    artifact: NuGet Package
+    displayName: 'Download build artifact'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Pipeline.Workspace)/NuGet Package
+      targetFolder: $(Build.SourcesDirectory)/BuildArtifacts/Packages/NuGet
+    displayName: 'Copy build artifact for test run'
+  - powershell: ./build.ps1
+    workingDirectory: ./tests/script-runner/
+    displayName: 'Run integration tests'
+  - publish: $(Build.SourcesDirectory)/BuildArtifacts/TestResults/Integration
+    artifact: Integration Tests Windows Server 2022 (.NET Core tool)
+    displayName: 'Publish generated reports as build artifact'
+# Integration Tests macOS 11 (.NET Core tool)
+- job: Test_macOS_11_DotNetCoreTool
+  displayName: Integration Tests macOS 11 (.NET Core tool)
+  dependsOn: Build
   pool:
     vmImage: 'macOS-11'
   steps:
-  - bash: |
-      ./build.sh --target=Buildserver
-    displayName: 'Cake Build'
-- job: Ubuntu
+  - download: current
+    artifact: NuGet Package
+    displayName: 'Download build artifact'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Pipeline.Workspace)/NuGet Package
+      targetFolder: $(Build.SourcesDirectory)/BuildArtifacts/Packages/NuGet
+    displayName: 'Copy build artifact for test run'
+  - bash: ./build.sh
+    workingDirectory: ./tests/script-runner/
+    displayName: 'Run integration tests'
+  - publish: $(Build.SourcesDirectory)/BuildArtifacts/TestResults/Integration
+    artifact: Integration Tests macOS 11 (.NET Core tool)
+    displayName: 'Publish generated reports as build artifact'
+# Integration Tests macOS 12 (.NET Core tool)
+- job: Test_macOS_12_DotNetCoreTool
+  displayName: Integration Tests macOS 12 (.NET Core tool)
+  dependsOn: Build
+  pool:
+    vmImage: 'macOS-12'
+  steps:
+  - download: current
+    artifact: NuGet Package
+    displayName: 'Download build artifact'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Pipeline.Workspace)/NuGet Package
+      targetFolder: $(Build.SourcesDirectory)/BuildArtifacts/Packages/NuGet
+    displayName: 'Copy build artifact for test run'
+  - bash: ./build.sh
+    workingDirectory: ./tests/script-runner/
+    displayName: 'Run integration tests'
+  - publish: $(Build.SourcesDirectory)/BuildArtifacts/TestResults/Integration
+    artifact: Integration Tests macOS 12 (.NET Core tool)
+    displayName: 'Publish generated reports as build artifact'
+# Integration Tests Ubuntu 18.04 (.NET Core tool)
+- job: Test_Ubuntu_18_04_DotNetCoreTool
+  displayName: Integration Tests Ubuntu 18.04 (.NET Core tool)
+  dependsOn: Build
   pool:
     vmImage: 'ubuntu-18.04'
   steps:
-  - bash: |
-      ./build.sh --target=Buildserver
-    displayName: 'Cake Build'
+  - download: current
+    artifact: NuGet Package
+    displayName: 'Download build artifact'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Pipeline.Workspace)/NuGet Package
+      targetFolder: $(Build.SourcesDirectory)/BuildArtifacts/Packages/NuGet
+    displayName: 'Copy build artifact for test run'
+  - bash: ./build.sh
+    workingDirectory: ./tests/script-runner/
+    displayName: 'Run integration tests'
+  - publish: $(Build.SourcesDirectory)/BuildArtifacts/TestResults/Integration
+    artifact: Integration Tests Ubuntu 18.04 (.NET Core tool)
+    displayName: 'Publish generated reports as build artifact'
+# Integration Tests Ubuntu 20.04 (.NET Core tool)
+- job: Test_Ubuntu_20_04_DotNetCoreTool
+  displayName: Integration Tests Ubuntu 20.04 (.NET Core tool)
+  dependsOn: Build
+  pool:
+    vmImage: 'ubuntu-20.04'
+  steps:
+  - download: current
+    artifact: NuGet Package
+    displayName: 'Download build artifact'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Pipeline.Workspace)/NuGet Package
+      targetFolder: $(Build.SourcesDirectory)/BuildArtifacts/Packages/NuGet
+    displayName: 'Copy build artifact for test run'
+  - bash: ./build.sh
+    workingDirectory: ./tests/script-runner/
+    displayName: 'Run integration tests'
+  - publish: $(Build.SourcesDirectory)/BuildArtifacts/TestResults/Integration
+    artifact: Integration Tests Ubuntu 20.04 (.NET Core tool)
+    displayName: 'Publish generated reports as build artifact'
