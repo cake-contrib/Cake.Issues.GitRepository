@@ -1,5 +1,5 @@
 #!/bin/bash
-SCRIPT_NAME="recipe.cake"
+SCRIPT_NAME="tests.cake"
 
 echo "Restoring .NET Core tools"
 dotnet tool restore

@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 
-$SCRIPT_NAME = "recipe.cake"
+$SCRIPT_NAME = "tests.cake"
 
 Write-Host "Restoring .NET Core tools"
 dotnet tool restore
